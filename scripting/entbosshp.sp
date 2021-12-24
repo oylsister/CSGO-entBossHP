@@ -14,6 +14,7 @@
 #include <cstrike>
 #include <clientprefs>
 #include <dhooks>
+#include <csgocolors_fix>
 
 #pragma newdecls required
 
@@ -30,7 +31,7 @@ public Plugin myinfo =
     name = "[CS:GO] EntBossHP", 
     author = "Oylsister", 
     description = "Showing Entity Health from the map", 
-    version = "Beta 1.0", 
+    version = "Beta 2.0", 
     url = "https://github.com/oylsister/"
 };
 
@@ -41,6 +42,10 @@ public void OnPluginStart()
         SetFailState("current plugin only support for CS:GO!");
         return;
     }
+
+    RegConsoleCmd("reloadbosshp", Command_ReloadConfig, "Reload Command", ADMFLAG_CONFIG);
+
+    LoadTranslations("entbosshp.phrases");
 
     ConVarInit();
     ArrayInit();
@@ -58,4 +63,11 @@ public void OnMapStart()
 public void OnClientCookiesCached(int client)
 {
     BossHPCookiesCached(client);
+}
+
+public Action Command_ReloadConfig(int client, int args)
+{
+    LoadBossConfig();
+    CReplyToCommand(client, "%T %T", "prefix", client, "reload successful", client);
+    return Plugin_Handled;
 }

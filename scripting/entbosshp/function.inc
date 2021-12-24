@@ -156,7 +156,13 @@ void SendNormalBhud(int client, int entity, const char[] entityname, int health)
 void ShowHitmarker(int client)
 {
     SetHudTextParams(-1.0, -1.0, 0.1, 255, 0, 0, 255, 1, 0.0, 0.1, 0.1);
-    ShowHudText(client, -1, "◞  ◟\n◝  ◜");
+    ShowHudText(client, g_iHitMarkerChannel, "◞  ◟\n◝  ◜");
+}
+
+void SetClientCash(int client)
+{
+    int cash = GetEntProp(client, Prop_Send, "m_iAccount");
+    SetEntProp(client, Prop_Send, "m_iAccount", cash + g_iReward);
 }
 
 stock int GetBossEntityIndex(const char[] entityname)
@@ -187,7 +193,14 @@ stock BossType GetBossType(int index)
 
 stock int GetBossName(int index, char[] name, int maxlen)
 {
-    return strcopy(name, maxlen, g_BossList[index].BOSS_NAME);
+    if(g_BossList[index].BOSS_NAME[0] != '\0')
+    {
+        return strcopy(name, maxlen, g_BossList[index].BOSS_NAME);
+    }
+    else
+    {
+        return strcopy(name, maxlen, "Boss");
+    }
 }
 
 stock int GetBossEntityName(int index, char[] name, int maxlen)

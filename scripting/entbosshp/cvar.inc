@@ -6,21 +6,30 @@
  * ==================== 
  */
 
-char sTag[32];
+ConVar g_Cvar_HitmarkerChannel;
+ConVar g_Cvar_Reward;
 
-ConVar g_Cvar_Prefix;
+int g_iHitMarkerChannel;
+int g_iReward;
 
 void ConVarInit()
 {
-    g_Cvar_Prefix = CreateConVar("entbosshp_prefix", "[entBossHP]", "Prefix for this plugin");
+    g_Cvar_HitmarkerChannel = CreateConVar("entbosshp_hitmarkerchannel", "0.0", "Specify hitmarker channel for this plugin", _, true, 0.0, true, 6.0);
+    g_Cvar_Reward = CreateConVar("entbosshp_reward", "10.0", "Specify cash reward for damaging boss", _, true, 0.0, false);
 
-    HookConVarChange(g_Cvar_Prefix, OnPrefixChange);
+    HookConVarChange(g_Cvar_HitmarkerChannel, OnHitmarkerChannelChanged);
+    HookConVarChange(g_Cvar_Reward, OnRewardChanged);
 
     AutoExecConfig(true, "entbosshp");
 }
 
-public void OnPrefixChange(ConVar cvar, char[] oldValue, char[] newValue)
+public void OnHitmarkerChannelChanged(ConVar cvar, char[] oldValue, char[] newValue)
 {
-    GetConVarString(g_Cvar_Prefix, sTag, sizeof(sTag));
+    g_iHitMarkerChannel = g_Cvar_HitmarkerChannel.IntValue;
+}
+
+public void OnRewardChanged(ConVar cvar, char[] oldValue, char[] newValue)
+{
+    g_iReward = g_Cvar_Reward.IntValue;
 }
 

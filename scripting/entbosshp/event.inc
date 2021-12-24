@@ -25,8 +25,13 @@ public void OnRoundStart(Event event, const char[] name, bool dontBroadcast)
 
         for(int client = 1; client < MaxClients; client++)
         {
-            g_iClientEntityHit[client] = -1;
-            g_sClientEntityHitName[client] = '\0';
+            if(IsClientInGame(client))
+            {
+                g_iClientEntityHit[client] = -1;
+                g_sClientEntityHitName[client] = '\0';
+
+                CPrintToChat(client, "%T %T", "prefix", client, "round start", client);
+            }
         }
     }
 }

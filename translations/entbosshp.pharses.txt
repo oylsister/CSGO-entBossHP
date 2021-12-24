@@ -1,0 +1,87 @@
+"Phrases"
+{
+    "prefix"
+    {
+        "en"    "{green}[entBossHP]{default}"
+    }
+    "prefix menu"
+    {
+        "en"    "[entBossHP]"
+    }
+    "round start"
+    {
+        "en"    "The current map is supported by this plugin"
+    }
+    "cookie menu choice"
+    {
+        "en"    "Showing Entity Health"
+    }
+    "cookie menu title"
+    {
+        "en"    "Setting Menu"
+    }
+    "yes"
+    {
+        "en"    "Yes"
+    }
+    "no"
+    {
+        "en"    "No"
+    }
+    "Show BossHP"
+    {
+        "en"    "Show BossHP"
+    }
+    "Show BHud"
+    {
+        "en"    "Show BHud"
+    }
+    "Show Hitmarker"
+    {
+        "en"    "Show Hitmarker"
+    }
+    "Only Boss"
+    {
+        "en"    "Only Boss"
+    }
+    "All"
+    {
+        "en"    "All"
+    }
+    "Showing Boss health has been"
+    {
+        "en"    "Showing Boss health has been"
+    }
+    "Showing Bhud health has been"
+    {
+        "en"    "Showing Bhud health has been"
+    }
+    "Showing Hitmarker has been set to"
+    {
+        "en"    "Showing Hitmarker has been set to"
+    }
+    "Enabled"
+    {
+        "en"    "Enabled"
+    }
+    "Disabled"
+    {
+        "en"    "Disabled"
+    }
+    "None"
+    {
+        "en"    "None"
+    }
+    "Boss Only"
+    {
+        "en"    "Boss Only"
+    }
+    "Show All"
+    {
+        "en"    "Show All"
+    }
+    "reload successful"
+    {
+        "en"    "Successfully Attempting Reload Boss Config"
+    }
+}

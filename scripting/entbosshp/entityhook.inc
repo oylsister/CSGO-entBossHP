@@ -149,6 +149,7 @@ public void OnMathCounterOutValue(const char[] output, int caller, int activator
                     PushBossDataToArray(bossname, currenthp, maxhp);
                 }
             }
+            SetClientCash(activator);
         }
         else
         {
@@ -253,6 +254,8 @@ public void OnBreakableDamaged(const char[] output, int caller, int activator, f
             {
                 SendMultiBossHP(activator, iHealth);
             }
+            
+            SetClientCash(activator);
         }
         else
         {

@@ -30,6 +30,10 @@ void CookiesInit()
     g_hShowBhudCookie = RegClientCookie("entbosshp_showbhud", "Toggle show bhud option", CookieAccess_Protected);
     g_hHitmarkerCookie = RegClientCookie("entbosshp_hitmarker", "Toggle show hitmarker option", CookieAccess_Protected);
 
+    char menutitle[64];
+    Format(menutitle, sizeof(menutitle), "%t %t", "prefix menu", "cookie menu choice");
+    SetCookieMenuItem(entBossHPMenu_Cookie, 0, menutitle);
+
     for (int i = 1; i < MaxClients; i++)
     {
         if(!AreClientCookiesCached(i))
@@ -46,6 +50,17 @@ void CookiesCommand()
     RegConsoleCmd("sm_bhud", Command_BossHP);
 }
 
+public void entBossHPMenu_Cookie(int client, CookieMenuAction action, any info, char[] buffer, int maxlen)
+{
+    switch(action)
+    {
+        case CookieMenuAction_SelectOption:
+        {
+            BossHPCookieMenu(client);
+        }
+    }
+}
+
 public Action Command_BossHP(int client, int args)
 {
     BossHPCookieMenu(client);
@@ -54,11 +69,21 @@ public Action Command_BossHP(int client, int args)
 
 void BossHPCookieMenu(int client)
 {
+    char showhp[64];
+    char showbhud[64];
+    char showhm[64];
+
     Menu menu = new Menu (BossHPCookieMenuHandler, MENU_ACTIONS_ALL);
-    menu.SetTitle("[entBossHP] Setting Menu");
-    menu.AddItem("Show BossHP", "Show BossHP");
-    menu.AddItem("Show BHud", "Show BHud");
-    menu.AddItem("Show Hitmarker", "Show Hitmarker");
+    menu.SetTitle("%T %T", "prefix menu", client, "cookie menu title", client);
+
+    Format(showhp, sizeof(showhp), "%T", "Show BossHP", client);
+    Format(showbhud, sizeof(showbhud), "%T", "Show BHud", client);
+    Format(showhm, sizeof(showhm), "%T", "Show Hitmarker", client);
+
+    menu.AddItem("Show BossHP", showhp);
+    menu.AddItem("Show BHud", showbhud);
+    menu.AddItem("Show Hitmarker", showhm);
+
     menu.ExitButton = true;
     menu.ExitBackButton = true;
     menu.Display(client, MENU_TIME_FOREVER);
@@ -77,12 +102,12 @@ public int BossHPCookieMenuHandler(Menu menu, MenuAction action, int param1, int
                 char display[64];
                 if(!g_bShowBossHP[param1])
                 {
-                    Format(display, sizeof(display), "%s: No", info);
+                    Format(display, sizeof(display), "%T %T", "Show BossHP", param1, "no", param1);
                     RedrawMenuItem(display);
                 }
                 else
                 {
-                    Format(display, sizeof(display), "%s: Yes", info);
+                    Format(display, sizeof(display), "%T: %T", "Show BossHP", param1, "yes", param1);
                     RedrawMenuItem(display);
                 }
             }
@@ -91,12 +116,12 @@ public int BossHPCookieMenuHandler(Menu menu, MenuAction action, int param1, int
                 char display[64];
                 if(!g_bShowBhud[param1])
                 {
-                    Format(display, sizeof(display), "%s: No", info);
+                    Format(display, sizeof(display), "%T: %T", "Show BHud", param1, "no", param1);
                     RedrawMenuItem(display);
                 }
                 else
                 {
-                    Format(display, sizeof(display), "%s: Yes", info);
+                    Format(display, sizeof(display), "%T: %T", "Show BHud", param1, "yes", param1);
                     RedrawMenuItem(display);
                 }
             }
@@ -105,17 +130,17 @@ public int BossHPCookieMenuHandler(Menu menu, MenuAction action, int param1, int
                 char display[64];
                 if(g_iShowHitmarker[param1] == 0)
                 {
-                    Format(display, sizeof(display), "%s: No", info);
+                    Format(display, sizeof(display), "%T: %T", "Show Hitmarker", param1, "no", param1);
                     RedrawMenuItem(display);
                 }
                 else if(g_iShowHitmarker[param1] == 1)
                 {
-                    Format(display, sizeof(display), "%s: Only Boss", info);
+                    Format(display, sizeof(display), "%T: %T", "Show Hitmarker", param1, "Only Boss", param1);
                     RedrawMenuItem(display);
                 }
                 else
                 {
-                    Format(display, sizeof(display), "%s: All", info);
+                    Format(display, sizeof(display), "%T: %T", "Show Hitmarker", param1, "All", param1);
                     RedrawMenuItem(display);
                 }
             }
@@ -129,12 +154,12 @@ public int BossHPCookieMenuHandler(Menu menu, MenuAction action, int param1, int
                 if(!g_bShowBossHP[param1])
                 {
                     g_bShowBossHP[param1] = true;
-                    PrintToChat(param1, " \x04%s\x01 Showing Boss health has been \x06Enabled.", sTag);
+                    CPrintToChat(param1, "%T %T \x06%T.", "prefix", param1, "Showing Boss health has been", param1, "Enabled", param1);
                 }
                 else
                 {
                     g_bShowBossHP[param1] = false;
-                    PrintToChat(param1, " \x04%s\x01 Showing Boss health has been \x06Disabled.", sTag);
+                    CPrintToChat(param1, "%T %T \x06%T.", "prefix", param1, "Showing Boss health has been", param1, "Disabled", param1);
                 }
                 SaveClientCookie(param1, BOSSHP_HANDLE);
             }
@@ -143,12 +168,12 @@ public int BossHPCookieMenuHandler(Menu menu, MenuAction action, int param1, int
                 if(!g_bShowBhud[param1])
                 {
                     g_bShowBhud[param1] = true;
-                    PrintToChat(param1, " \x04%s\x01 Showing Bhud health has been \x06Enabled.", sTag);
+                    CPrintToChat(param1, "%T %T \x06%T.", "prefix", param1, "Showing Bhud health has been", param1, "Enabled", param1);
                 }
                 else
                 {
                     g_bShowBhud[param1] = false;
-                    PrintToChat(param1, " \x04%s\x01 Showing Bhud health has been \x06Disabled.", sTag);
+                    CPrintToChat(param1, "%T %T \x06%T.", "prefix", param1, "Showing Bhud health has been", param1, "Disabled", param1);
                 }
                 SaveClientCookie(param1, BHUD_HANDLE);
             }
@@ -157,24 +182,33 @@ public int BossHPCookieMenuHandler(Menu menu, MenuAction action, int param1, int
                 if(g_iShowHitmarker[param1] == HITMARKER_ALL)
                 {
                     g_iShowHitmarker[param1] = HITMARKER_NONE;
-                    PrintToChat(param1, " \x04%s\x01 Showing Hitmarker has been set to \x06None.", sTag);
+                    CPrintToChat(param1, "%T %T \x06%T.", "prefix", param1, "Showing Hitmarker has been set to", param1, "None", param1);
                 }
                 else
                 {
                     g_iShowHitmarker[param1]++;
                     if(g_iShowHitmarker[param1] == HITMARKER_BOSSONLY)
                     {
-                        PrintToChat(param1, " \x04%s\x01 Showing Hitmarker has been set to \x06Boss Only.", sTag);
+                        CPrintToChat(param1, "%T %T \x06%T.", "prefix", param1, "Showing Hitmarker has been set to", param1, "Boss Only", param1);
                     }
                     else
                     {
-                        PrintToChat(param1, " \x04%s\x01 Showing Hitmarker has been set to \x06Show All.", sTag);
+                        CPrintToChat(param1, "%T %T \x06%T.", "prefix", param1, "Showing Hitmarker has been set to", param1, "Show All", param1);
                     }
                 }
                 SaveClientCookie(param1, HITMARKER_HANDLE);
             }
         }
+        case MenuAction_Cancel:
+        {
+            ShowCookieMenu(param1);
+        }
+        case MenuAction_End:
+        {
+            delete menu;
+        }
     }
+    return 0;
 }
 
 void BossHPCookiesCached(int client)
