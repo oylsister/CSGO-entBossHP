@@ -1,14 +1,16 @@
 /**
  * ====================
  *     EntBossHP
- *   File: dhooks.inc
+ *   File: offset.inc
  *   Author: Oylsister
  * ==================== 
  */
 
+#include <dhooks>
+
 Handle g_hAcceptInput = INVALID_HANDLE;
 
-void DhookInit()
+void OffsetInit()
 {
     if(GetEngineVersion() != Engine_CSGO)
     {

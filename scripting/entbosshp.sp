@@ -13,7 +13,6 @@
 #include <sdkhooks>
 #include <cstrike>
 #include <clientprefs>
-#include <dhooks>
 #include <csgocolors_fix>
 
 #pragma newdecls required
@@ -51,7 +50,7 @@ public void OnPluginStart()
     ArrayInit();
     HookInit();
     CookiesInit();
-    DhookInit();
+    OffsetInit();
     EventInit();
 }
 
