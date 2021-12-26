@@ -218,6 +218,7 @@ stock int GetIteratorMode(int index)
     return g_HPBarList[index].HPBar_Mode;
 }
 
+
 // Temporary Data
 
 stock void SetBossLastChangeTime(int index)

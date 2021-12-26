@@ -14,6 +14,7 @@
 #include <cstrike>
 #include <clientprefs>
 #include <csgocolors_fix>
+#include <entbosshp>
 
 #pragma newdecls required
 
@@ -23,6 +24,7 @@
 #include "entbosshp/function.inc"
 #include "entbosshp/offset.inc"
 #include "entbosshp/entityhook.inc"
+#include "entbosshp/native.inc"
 #include "entbosshp/event.inc"
 
 public Plugin myinfo =
@@ -30,7 +32,7 @@ public Plugin myinfo =
     name = "[CS:GO] EntBossHP", 
     author = "Oylsister", 
     description = "Showing Entity Health from the map", 
-    version = "Beta 2.0", 
+    version = "Beta 2.1", 
     url = "https://github.com/oylsister/"
 };
 
@@ -49,6 +51,7 @@ public void OnPluginStart()
     ConVarInit();
     ArrayInit();
     HookInit();
+    NativeInit();
     CookiesInit();
     OffsetInit();
     EventInit();
