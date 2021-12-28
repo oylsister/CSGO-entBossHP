@@ -117,6 +117,84 @@ void LoadBossConfig()
     delete kv;
 }
 
+void LoadGFLBossConfig()
+{
+    char sConfig[PLATFORM_MAX_PATH];
+    char sMapName[PLATFORM_MAX_PATH];
+
+    GetCurrentMap(sMapName, sizeof(sMapName));
+
+    char sTemp[32];
+    int iTemp;
+
+    BuildPath(Path_SM, sConfig, sizeof(sConfig), "configs/bosshud/%s.txt", sMapName);
+    LogMessage("Loading Boss Config: %s", sConfig);
+
+    if (!FileExists(sConfig))
+    {
+        LogMessage("Couldn't find Boss Config: %s", sConfig);
+        return;
+    }
+
+    g_iTotal = 0;
+    g_bLoaded = true;
+
+    KeyValues kv = CreateKeyValues("math_counter");
+    FileToKeyValues(kv, sConfig);
+
+    if(KvGotoFirstSubKey(kv))
+    {
+        do
+        {
+            KvGetString(kv, "Type", sTemp, sizeof(sTemp));
+            g_BossList[g_iTotal].BOSS_TYPE = GetConfigBossType(sTemp);
+
+            if(g_BossList[g_iTotal].BOSS_TYPE == Type_Breakable)
+            {
+                KvGetString(kv, "BreakableName", sTemp, sizeof(sTemp));
+                FormatEx(g_BossList[g_iTotal].BOSS_ENTITY, 64, "%s", sTemp);
+
+                KvGetString(kv, "CustomText", sTemp, sizeof(sTemp));
+                FormatEx(g_BossList[g_iTotal].BOSS_NAME, 64, "%s", sTemp);
+            }
+
+            else 
+            {
+                KvGetString(kv, "HP_Counter", sTemp, sizeof(sTemp));
+                FormatEx(g_BossList[g_iTotal].BOSS_ENTITY, 64, "%s", sTemp);
+
+                iTemp = KvGetNum(kv, "HP_Mode", -1);
+                g_MathCounterList[g_iTotal].MC_MODE = iTemp;
+
+                KvGetString(kv, "HPinit_Counter", sTemp, sizeof(sTemp));
+                FormatEx(g_BossList[g_iTotal].BOSS_BACKUP, 64, "%s", sTemp);
+
+                KvGetString(kv, "HPbar_Counter", sTemp, sizeof(sTemp));
+                FormatEx(g_BossList[g_iTotal].BOSS_ITERATOR, 64, "%s", sTemp);
+
+                iTemp = KvGetNum(kv, "HPbar_mode", -1);
+                g_HPBarList[g_iTotal].HPBar_Mode = iTemp; 
+
+                if(strlen(g_BossList[g_iTotal].BOSS_BACKUP) <= 0 && strlen(g_BossList[g_iTotal].BOSS_ITERATOR) <= 0)
+                {
+                    g_BossList[g_iTotal].BOSS_TYPE = Type_MathCounter;
+                }
+                else
+                {
+                    g_BossList[g_iTotal].BOSS_TYPE = Type_HPBar;
+                }
+
+                KvGetString(kv, "CustomText", sTemp, sizeof(sTemp));
+                FormatEx(g_BossList[g_iTotal].BOSS_NAME, 64, "%s", sTemp);
+            }
+
+            g_iTotal++;
+        }
+        while(KvGotoNextKey(kv));
+    }
+    delete kv;
+}
+
 BossType GetConfigBossType(const char[] typename)
 {
     if(StrEqual(typename, "breakable", false))

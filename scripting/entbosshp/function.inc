@@ -32,33 +32,7 @@ void ArrayInit()
     array_maxhp = new ArrayList();
 }
 
-void SendBossHP(int index, BossType typeboss, int health)
-{
-    char bossname[64];
-    GetBossName(index, bossname, sizeof(bossname));
-
-    if(typeboss == Type_Breakable)
-    {
-        for(int i = 1; i <= MaxClients; i++)
-        {
-            if(IsClientInGame(i) && g_bShowBossHP[i])
-            {
-                if(health > 0)
-                {
-                    PrintHintText(i, "%s : %i", bossname, health);
-                }
-                else
-                {
-                    PrintHintText(i, "DEAD\n%s : 0", bossname);
-                }
-            }
-        }
-    }
-
-    g_fLastShowHP = GetEngineTime();
-}
-
-void SendMultiBossHP(int client, int health)
+void SendBossHPText(int client, int health)
 {
     float g_fTime = GetEngineTime();
 
@@ -75,9 +49,9 @@ void SendMultiBossHP(int client, int health)
 
         for (int index = 0; index < array_hp.Length; index++)
         {
-            array_bossname.GetString(index, bossname, sizeof(bossname));
-            currenthp = array_hp.Get(index);
-            maxhp = array_maxhp.Get(index);
+            GetArrayBossName(index, bossname, sizeof(bossname));
+            currenthp = GetArrayBossHP(index);
+            maxhp = GetArrayBossMaxHP(index);
 
             float percent = float(currenthp) / float(maxhp) * 100.0;
 
@@ -249,4 +223,20 @@ stock int SetBossMaxHP(int index, int value)
 stock int GetBossMaxHP(int index)
 {
     return g_iTempData[index].data_maxhp;
+}
+
+// Aray Data
+stock int GetArrayBossName(int arrayindex, char[] buffer, int maxlen)
+{
+    return array_bossname.GetString(arrayindex, buffer, maxlen);
+}
+
+stock int GetArrayBossHP(int arrayindex)
+{
+    return array_hp.Get(arrayindex);
+}
+
+stock int GetArrayBossMaxHP(int arrayindex)
+{
+    return array_maxhp.Get(arrayindex);
 }

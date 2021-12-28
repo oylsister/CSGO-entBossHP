@@ -59,7 +59,14 @@ public void OnPluginStart()
 
 public void OnMapStart()
 {
-    LoadBossConfig();
+    if(g_iConfigMode == 2)
+    {
+        LoadGFLBossConfig();
+    }
+    else
+    {
+        LoadBossConfig();
+    }
 }
 
 public void OnClientCookiesCached(int client)

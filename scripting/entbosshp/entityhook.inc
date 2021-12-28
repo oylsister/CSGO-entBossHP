@@ -150,18 +150,7 @@ public void OnMathCounterOutValue(const char[] output, int caller, int activator
                 }
             }
 
-            // Print Single Boss Format
-            if(array_hp.Length == 1)
-            {
-                SendBossHP(index, itype, RoundToNearest(fOutValue));
-            }
-
-            // Print Multi Boss Format
-            else
-            {
-                SendMultiBossHP(activator, RoundToNearest(fOutValue));
-            }
-
+            SendBossHPText(activator, RoundToNearest(fOutValue));
             SetClientCash(activator);
         }
         else
@@ -256,18 +245,7 @@ public void OnBreakableDamaged(const char[] output, int caller, int activator, f
                 PushBossDataToArray(bossname, currenthp, maxhp);
             }
 
-            // Print Single Boss Format
-            if(array_hp.Length == 1)
-            {
-                SendBossHP(index, itype, iHealth);
-            }
-
-            // Print Multi Boss Format
-            else
-            {
-                SendMultiBossHP(activator, iHealth);
-            }
-            
+            SendBossHPText(activator, iHealth);
             SetClientCash(activator);
         }
         else
