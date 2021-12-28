@@ -55,11 +55,14 @@ void SendBossHPText(int client, int health)
 
             float percent = float(currenthp) / float(maxhp) * 100.0;
 
-            Format(message, sizeof(message), "%s%s: %dHP (%.1f%%)\n", message, bossname, currenthp, percent);
+            char hpbar[32];
+            FormatBossHP(hpbar, 32, percent);
+
+            Format(message, sizeof(message), "%s%s: %dHP %s (%.1f%%)\n", message, bossname, hpbar, currenthp, percent);
 
             if(currenthp == 0)
             {
-                Format(message, sizeof(message), "%s%s: 0HP (DEAD)\n", message, bossname);
+                Format(message, sizeof(message), "%s%s: 0HP %s (DEAD)\n", message, bossname, hpbar);
             }
         }
 
@@ -72,6 +75,25 @@ void SendBossHPText(int client, int health)
         }
     }
     g_fLastShowHP = g_fTime;
+}
+
+void FormatBossHP(char[] buffer, int maxlen, float percent)
+{
+    int hpbar = RoundToNearest(percent / 10.0);
+
+    buffer[0] = '\0';
+    
+    for(int i = 0; i < 10; i++)
+    {
+        if(i <= hpbar)
+        {
+            StrCat(buffer, maxlen, "■");
+        }
+        else
+        {
+            StrCat(buffer, maxlen, "□");
+        }
+    }
 }
 
 void SendNormalBhud(int client, int entity, const char[] entityname, int health)

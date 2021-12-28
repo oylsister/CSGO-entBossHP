@@ -32,7 +32,7 @@ public Plugin myinfo =
     name = "[CS:GO] EntBossHP", 
     author = "Oylsister", 
     description = "Showing Entity Health from the map", 
-    version = "Beta 2.2", 
+    version = "Beta 2.4", 
     url = "https://github.com/oylsister/"
 };
 
